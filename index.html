@@ -1,7 +1,196 @@
 <!DOCTYPE html>
-<html>
-  <head><meta charset="UTF-8"><title>테스트</title></head>
-  <body>
-    <h1>업로드 성공!</h1>
-  </body>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>보안국 벌금 계산기</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #f9f9f9;
+      padding: 30px;
+      max-width: 600px;
+      margin: auto;
+    }
+    h1 {
+      text-align: center;
+      font-size: 26px;
+    }
+    .category {
+      margin-top: 30px;
+      border-top: 1px solid #ccc;
+      padding-top: 10px;
+    }
+    .category h2 {
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+    }
+    .category h2::before {
+      content: "📁";
+      margin-right: 6px;
+    }
+    .item-buttons {
+      margin-top: 10px;
+    }
+    .item-buttons button {
+      margin: 8px 8px 0 0;
+      padding: 14px 20px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background: white;
+      cursor: pointer;
+    }
+    .item-buttons button:hover {
+      background: #eee;
+    }
+    .custom-section {
+      margin-top: 30px;
+      border-top: 1px solid #ccc;
+      padding-top: 10px;
+    }
+    .custom-section h2 {
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+    }
+    .custom-section h2::before {
+      content: "📝";
+      margin-right: 6px;
+    }
+    input[type="text"], input[type="number"] {
+      padding: 10px;
+      margin-right: 8px;
+      font-size: 16px;
+      width: 120px;
+    }
+    button.add-btn {
+      padding: 10px 16px;
+      font-size: 16px;
+    }
+    button.reset-btn {
+      margin-top: 12px;
+      padding: 10px 20px;
+      font-size: 16px;
+    }
+    ul {
+      list-style-type: none;
+      padding-left: 0;
+      margin-top: 20px;
+    }
+    li {
+      padding: 10px 0;
+      font-size: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .remove-btn {
+      background-color: #ff6666;
+      border: none;
+      border-radius: 6px;
+      padding: 6px 10px;
+      font-size: 16px;
+      color: white;
+      cursor: pointer;
+    }
+    .remove-btn:hover {
+      background-color: #cc0000;
+    }
+    #total {
+      font-weight: bold;
+      margin-top: 20px;
+      font-size: 20px;
+      text-align: right;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>보안국 벌금 계산기</h1>
+
+  <div class="category">
+    <h2>벌금</h2>
+    <div class="item-buttons">
+      <button onclick="addItem('속도위반', 1200)">속도위반 (₩1,200)</button>
+      <button onclick="addItem('김밥', 1500)">김밥 (₩1,500)</button>
+      <button onclick="addItem('미정 1', 0)">미정 1 (₩0)</button>
+      <button onclick="addItem('미정 2', 0)">미정 2 (₩0)</button>
+      <button onclick="addItem('미정 3', 0)">미정 3 (₩0)</button>
+    </div>
+  </div>
+
+  <div class="category">
+    <h2>음료</h2>
+    <div class="item-buttons">
+      <button onclick="addItem('콜라', 1200)">콜라 (₩1,200)</button>
+      <button onclick="addItem('사이다', 1000)">사이다 (₩1,000)</button>
+      <button onclick="addItem('미정 1', 0)">미정 1 (₩0)</button>
+      <button onclick="addItem('미정 2', 0)">미정 2 (₩0)</button>
+      <button onclick="addItem('미정 3', 0)">미정 3 (₩0)</button>
+    </div>
+  </div>
+
+  <div class="custom-section">
+    <h2>사용자 정의 항목</h2>
+    <input type="text" id="customName" placeholder="항목명" />
+    <input type="number" id="customPrice" placeholder="가격" />
+    <button class="add-btn" onclick="addCustomItem()">추가</button>
+    <br/>
+    <button class="reset-btn" onclick="resetAll()">전체 초기화</button>
+  </div>
+
+  <ul id="item-list"></ul>
+  <div id="total">총 합계: ₩0</div>
+
+  <script>
+    let items = [];
+    let total = 0;
+
+    function addItem(name, price) {
+      items.push({ name, price });
+      total += price;
+      updateDisplay();
+    }
+
+    function addCustomItem() {
+      const name = document.getElementById("customName").value.trim();
+      const price = parseInt(document.getElementById("customPrice").value.trim());
+
+      if (name && !isNaN(price)) {
+        addItem(name, price);
+        document.getElementById("customName").value = "";
+        document.getElementById("customPrice").value = "";
+      } else {
+        alert("항목명과 가격을 정확히 입력해주세요.");
+      }
+    }
+
+    function removeItem(index) {
+      total -= items[index].price;
+      items.splice(index, 1);
+      updateDisplay();
+    }
+
+    function resetAll() {
+      items = [];
+      total = 0;
+      updateDisplay();
+    }
+
+    function updateDisplay() {
+      const list = document.getElementById("item-list");
+      list.innerHTML = "";
+
+      items.forEach((item, index) => {
+        const li = document.createElement("li");
+        li.innerHTML = `${item.name} - ₩${item.price.toLocaleString('ko-KR')} <button class="remove-btn" onclick="removeItem(${index})">❌</button>`;
+        list.appendChild(li);
+      });
+
+      document.getElementById("total").textContent = `총 합계: ₩${total.toLocaleString('ko-KR')}`;
+    }
+  </script>
+
+</body>
 </html>
