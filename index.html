@@ -44,32 +44,18 @@
     .item-buttons button:hover {
       background: #eee;
     }
-    .custom-section {
-      margin-top: 30px;
-      border-top: 1px solid #ccc;
-      padding-top: 10px;
+    .item-with-qty {
+      margin: 8px 0;
     }
-    .custom-section h2 {
-      font-size: 20px;
-      display: flex;
-      align-items: center;
-    }
-    .custom-section h2::before {
-      content: "📝";
+    .item-with-qty input[type="number"] {
+      width: 60px;
+      padding: 6px;
+      font-size: 16px;
+      margin-left: 6px;
       margin-right: 6px;
     }
-    input[type="text"], input[type="number"] {
-      padding: 10px;
-      margin-right: 8px;
-      font-size: 16px;
-      width: 120px;
-    }
-    button.add-btn {
-      padding: 10px 16px;
-      font-size: 16px;
-    }
     button.reset-btn {
-      margin-top: 12px;
+      margin-top: 20px;
       padding: 10px 20px;
       font-size: 16px;
     }
@@ -132,14 +118,28 @@
     </div>
   </div>
 
-  <div class="custom-section">
-    <h2>사용자 정의 항목</h2>
-    <input type="text" id="customName" placeholder="항목명" />
-    <input type="number" id="customPrice" placeholder="가격" />
-    <button class="add-btn" onclick="addCustomItem()">추가</button>
-    <br/>
-    <button class="reset-btn" onclick="resetAll()">전체 초기화</button>
+  <div class="category">
+    <h2>미정</h2>
+    <div class="item-buttons">
+      <div class="item-with-qty">
+        <label>피자 (₩8,000):</label>
+        <input type="number" min="1" value="1" id="pizzaQty">
+        <button onclick="addItemWithQty('피자', 8000, 'pizzaQty')">추가</button>
+      </div>
+      <div class="item-with-qty">
+        <label>치킨 (₩12,000):</label>
+        <input type="number" min="1" value="1" id="chickenQty">
+        <button onclick="addItemWithQty('치킨', 12000, 'chickenQty')">추가</button>
+      </div>
+      <div class="item-with-qty">
+        <label>음료수 (₩2,000):</label>
+        <input type="number" min="1" value="1" id="drinkQty">
+        <button onclick="addItemWithQty('음료수', 2000, 'drinkQty')">추가</button>
+      </div>
+    </div>
   </div>
+
+  <button class="reset-btn" onclick="resetAll()">전체 초기화</button>
 
   <ul id="item-list"></ul>
   <div id="total">총 합계: ₩0</div>
@@ -154,16 +154,13 @@
       updateDisplay();
     }
 
-    function addCustomItem() {
-      const name = document.getElementById("customName").value.trim();
-      const price = parseInt(document.getElementById("customPrice").value.trim());
-
-      if (name && !isNaN(price)) {
-        addItem(name, price);
-        document.getElementById("customName").value = "";
-        document.getElementById("customPrice").value = "";
+    function addItemWithQty(name, unitPrice, qtyInputId) {
+      const qty = parseInt(document.getElementById(qtyInputId).value);
+      if (!isNaN(qty) && qty > 0) {
+        const totalPrice = unitPrice * qty;
+        addItem(`${name} x${qty}`, totalPrice);
       } else {
-        alert("항목명과 가격을 정확히 입력해주세요.");
+        alert("갯수를 정확히 입력해주세요.");
       }
     }
 
