@@ -103,7 +103,7 @@
   </div>
 
   <div class="category">
-    <h2>경범죄</h2>
+    <h2>도로교통</h2>
     <div class="item-buttons">
       <button onclick="addMinorViolation('속도위반', 5000000)">속도위반 (₩5,000,000)</button>
       <button onclick="addMinorViolation('차선위반', 5000000)">차선위반 (₩5,000,000)</button>
@@ -126,6 +126,14 @@
     </div>
   </div>
 
+  <div class="category">
+  <h2>폭행 및 살인</h2>
+  <div class="item-buttons">
+    <button onclick="addItem('살인미수', 30000000)">살인미수 (₩30,000,000)</button>
+    <button onclick="addItem('명예회손', 30000000)">명예회손 (₩30,000,000)</button>
+    <button onclick="addItem('살인', 50000000)">살인 (₩50,000,000)</button>
+  </div>
+</div>
   <button class="reset-btn" onclick="resetAll()">전체 초기화</button>
 
   <ul id="item-list"></ul>
