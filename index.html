@@ -48,7 +48,7 @@
       margin: 8px 0;
     }
     .item-with-qty input[type="number"] {
-      width: 60px;
+      width: 80px;
       padding: 6px;
       font-size: 16px;
       margin-left: 6px;
@@ -125,9 +125,10 @@
     <h2>보석금</h2>
     <div class="item-buttons">
       <div class="item-with-qty">
-        <label>보석금 (₩5,000,000):</label>
-        <input type="number" min="1" value="1" id="bailQty">
-        <button onclick="addItemWithQty('보석금', 5000000, 'bailQty')">추가</button>
+        <label>보석금 (단가 ₩5,000,000):</label><br />
+        <input type="number" min="1" value="1" id="bailQty1" placeholder="입력 1">
+        <input type="number" min="1" value="1" id="bailQty2" placeholder="입력 2">
+        <button onclick="addFixedBail()">추가</button>
       </div>
     </div>
   </div>
@@ -147,13 +148,16 @@
       updateDisplay();
     }
 
-    function addItemWithQty(name, unitPrice, qtyInputId) {
-      const qty = parseInt(document.getElementById(qtyInputId).value);
-      if (!isNaN(qty) && qty > 0) {
-        const totalPrice = unitPrice * qty;
-        addItem(`${name} x${qty}`, totalPrice);
+    function addFixedBail() {
+      const qty1 = parseInt(document.getElementById("bailQty1").value);
+      const qty2 = parseInt(document.getElementById("bailQty2").value);
+      const unitPrice = 5000000;
+
+      if (!isNaN(qty1) && qty1 > 0 && !isNaN(qty2) && qty2 > 0) {
+        const totalPrice = unitPrice * qty1 * qty2;
+        addItem(`보석금 x${qty1} x${qty2}`, totalPrice);
       } else {
-        alert("갯수를 정확히 입력해주세요.");
+        alert("숫자를 정확히 입력해주세요.");
       }
     }
 
