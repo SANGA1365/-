@@ -154,12 +154,7 @@
     </div>
   </div>
 
-  <button class="reset-btn" onclick="resetAll()">전체 초기화</button>
-
-  <ul id="item-list"></ul>
-  <div id="total">총 합계: ₩0</div>
-
-  <!-- ✅ 보석금 카테고리: 맨 아래 -->
+  <!-- ✅ 보석금 카테고리: 가장 마지막에 위치 -->
   <div class="category">
     <h2>보석금</h2>
     <div class="item-buttons">
@@ -171,6 +166,11 @@
       </div>
     </div>
   </div>
+
+  <button class="reset-btn" onclick="resetAll()">전체 초기화</button>
+
+  <ul id="item-list"></ul>
+  <div id="total">총 합계: ₩0</div>
 
   <script>
     let items = [];
