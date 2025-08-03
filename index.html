@@ -8,7 +8,7 @@
       font-family: sans-serif;
       background-color: #f9f9f9;
       padding: 30px;
-      max-width: 600px;
+      max-width: 1000px;
       margin: auto;
     }
     h1 {
@@ -31,9 +31,11 @@
     }
     .item-buttons {
       margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
     }
     .item-buttons button {
-      margin: 8px 8px 0 0;
       padding: 14px 20px;
       font-size: 16px;
       border: 1px solid #ccc;
@@ -51,8 +53,7 @@
       width: 80px;
       padding: 6px;
       font-size: 16px;
-      margin-left: 6px;
-      margin-right: 6px;
+      margin: 0 6px;
     }
     button.reset-btn {
       margin-top: 20px;
@@ -126,8 +127,8 @@
     <div class="item-buttons">
       <div class="item-with-qty">
         <label>보석금 (단가 ₩5,000,000):</label><br />
-        <input type="number" min="1" value="1" id="bailQty1" placeholder="구금 분수">
-        <input type="number" min="1" value="1" id="bailQty2" placeholder="인원 수">
+        <input type="number" min="1" value="1" id="bailQty1" placeholder="입력 1">
+        <input type="number" min="1" value="1" id="bailQty2" placeholder="입력 2">
         <button onclick="addFixedBail()">추가</button>
       </div>
     </div>
@@ -161,6 +162,19 @@
       }
     }
 
+    function formatKoreanCurrency(value) {
+      if (value >= 100000000) {
+        const eok = Math.floor(value / 100000000);
+        const man = Math.floor((value % 100000000) / 10000);
+        return `${eok}억${man > 0 ? ` ${man}만` : ''}`;
+      } else if (value >= 10000) {
+        const man = Math.floor(value / 10000);
+        return `${man}만`;
+      } else {
+        return `₩${value.toLocaleString('ko-KR')}`;
+      }
+    }
+
     function removeItem(index) {
       total -= items[index].price;
       items.splice(index, 1);
@@ -179,11 +193,11 @@
 
       items.forEach((item, index) => {
         const li = document.createElement("li");
-        li.innerHTML = `${item.name} - ₩${item.price.toLocaleString('ko-KR')} <button class="remove-btn" onclick="removeItem(${index})">❌</button>`;
+        li.innerHTML = `${item.name} - ${formatKoreanCurrency(item.price)} <button class="remove-btn" onclick="removeItem(${index})">❌</button>`;
         list.appendChild(li);
       });
 
-      document.getElementById("total").textContent = `총 합계: ₩${total.toLocaleString('ko-KR')}`;
+      document.getElementById("total").textContent = `총 합계: ${formatKoreanCurrency(total)}`;
     }
   </script>
 
