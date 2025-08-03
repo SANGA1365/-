@@ -149,6 +149,7 @@
 
     function addMinorViolation(name, price) {
       addItem(name, price);
+
       if (!minorViolations.includes(name)) {
         minorViolations.push(name);
       }
@@ -156,7 +157,18 @@
       if (minorViolations.length >= 3) {
         const alreadyExists = items.some(item => item.name === "난폭운전");
         if (!alreadyExists) {
+          // 기존 minor 항목들 제거
+          minorViolations.forEach(v => {
+            const idx = items.findIndex(item => item.name === v);
+            if (idx !== -1) {
+              total -= items[idx].price;
+              items.splice(idx, 1);
+            }
+          });
+
           addItem("난폭운전", 20000000);
+          updateDisplay();
+          minorViolations = [];
         }
       }
     }
@@ -175,16 +187,7 @@
     }
 
     function formatKoreanCurrency(value) {
-      if (value >= 100000000) {
-        const eok = Math.floor(value / 100000000);
-        const man = Math.floor((value % 100000000) / 10000);
-        return `${eok}억${man > 0 ? ` ${man}만` : ''}`;
-      } else if (value >= 10000) {
-        const man = Math.floor(value / 10000);
-        return `${man}만`;
-      } else {
-        return `₩${value.toLocaleString('ko-KR')}`;
-      }
+      return `₩${value.toLocaleString('ko-KR')}`;
     }
 
     function removeItem(index) {
