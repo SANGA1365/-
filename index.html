@@ -190,12 +190,14 @@
     }
 
     function handleAutoBailQty(name) {
-  if (name === "북쪽 은행") {
-    setBailQty1(30);
-  } else if (name === "북쪽 편의점") {
-    setBailQty1(20);
-  } else if (name === "북쪽 ATM") {
-    setBailQty1(20);
+  const bailMap = {
+    "북쪽 은행": 30,
+    "북쪽 편의점": 20,
+    "북쪽 ATM": 20,
+  };
+
+  if (bailMap.hasOwnProperty(name)) {
+    setBailQty1(bailMap[name]);
   }
 }
 
